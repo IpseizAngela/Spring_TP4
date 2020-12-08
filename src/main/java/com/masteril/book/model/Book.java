@@ -2,15 +2,15 @@ package com.masteril.book.model;
 
 import javax.persistence.*;
 
-@Table(name = "BOOK")
 @Entity
+@Table(name = "BOOK")
 public class Book {
 
         @Id
         @GeneratedValue(strategy= GenerationType.IDENTITY)
         private int id;
 
-        @Column(name = "title")
+        @Column(name = "title", unique = true)
         private String title;
 
         @Column(name = "author")

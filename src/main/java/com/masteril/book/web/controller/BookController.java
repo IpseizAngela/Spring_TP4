@@ -1,13 +1,9 @@
 package com.masteril.book.web.controller;
 
-import com.masteril.book.dao.IBookDAO;
 import com.masteril.book.model.Book;
 import com.masteril.book.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.websocket.server.PathParam;
-import java.util.List;
 
 @RestController
 public class BookController {
@@ -15,14 +11,22 @@ public class BookController {
     @Autowired
     private BookRepository dao;
 
+    @CrossOrigin(origins="http://localhost:4200")
     @GetMapping(value="/Books")
     public Iterable<Book> getBooks() {
         return dao.findAll();
     }
 
+    @CrossOrigin(origins="http://localhost:4200")
     @GetMapping(value="/Books/{id}")
     public Book getBook(@PathVariable int id) {
         return dao.findById(id);
+    }
+
+    @CrossOrigin(origins="http://localhost:4200")
+    @GetMapping(value="/Books/title/{title}")
+    public Book getBookTitle(@PathVariable String title) {
+        return dao.findByTitle(title);
     }
 
     @PostMapping(value="/Books")
@@ -30,6 +34,7 @@ public class BookController {
         dao.save(b);
     }
 
+    @CrossOrigin(origins="http://localhost:4200")
     @PutMapping(value="/Books/{id}")
     public void updateBook(@RequestBody Book newBook, @PathVariable int id) {
         Book book = dao.findById(id);
@@ -39,14 +44,14 @@ public class BookController {
         }
         if (newBook.getAuthor() != null) {
             if (!newBook.getAuthor().trim().equals(""))
-                book.setTitle(newBook.getAuthor());
+                book.setAuthor(newBook.getAuthor());
         }
         if (newBook.getDescription() != null) {
             if (!newBook.getDescription().trim().equals(""))
-                book.setTitle(newBook.getDescription());
+                book.setDescription(newBook.getDescription());
         }
         if (newBook.getPrice() > 0) {
-            book.setTitle(newBook.getDescription());
+            book.setPrice(newBook.getPrice());
         }
         dao.save(book);
     }
